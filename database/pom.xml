@@ -60,7 +60,7 @@
                             <name>frequent-flier-database</name>
                             <build>
                                 <dockerFile>${project.basedir}/Dockerfile</dockerFile>
-                                <contextDirectory>${project.basedir}</contextDirectory>
+
                             </build>
                             <run>
                                 <ports>
