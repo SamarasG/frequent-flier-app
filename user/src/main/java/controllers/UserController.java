@@ -43,4 +43,24 @@ public class UserController {
         userService.deleteUser(id);
         return Response.noContent().build();
     }
+    @POST
+    @Path("/register")
+    public Response registerUser(User user) {
+        try {
+            User registeredUser = userService.registerUser(user);
+            return Response.status(Response.Status.CREATED).entity(registeredUser).build();
+        } catch (IllegalArgumentException e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        }
+    }
+    @POST
+    @Path("/login")
+    public Response loginUser(@QueryParam("email") String email, @QueryParam("password") String password) {
+        boolean isAuthenticated = userService.authenticateUser(email, password);
+        if (isAuthenticated) {
+            return Response.ok("Login successful").build();
+        } else {
+            return Response.status(Response.Status.UNAUTHORIZED).entity("Invalid credentials").build();
+        }
+    }
 }
