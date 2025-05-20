@@ -1,8 +1,10 @@
+# user/Dockerfile
 FROM openjdk:17-jdk-slim
 
+WORKDIR /app
 
-
-COPY ./target/user-1.0.0-SNAPSHOT.jar /user-service.jar
+COPY ./target/user-1.0.0-SNAPSHOT-runner.jar user-service.jar
 
 EXPOSE 8082
-CMD ["java", "-jar", "/user-service.jar"]
+
+CMD ["java", "-jar", "user-service.jar"]

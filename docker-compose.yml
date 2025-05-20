@@ -1,0 +1,68 @@
+version: '3.8'
+
+networks:
+  user-network:
+  chat-network:
+  flights-network:
+  database-network:
+  external-db-network:
+    external: true
+    name: code-with-quarkus_default  # Match the existing external DB network name
+
+services:
+  database:
+    build:
+      context: ./database
+    container_name: frequent_flier_db
+    ports:
+      - "5433:5433"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: frequent_flier
+    volumes:
+      - ./database/src/main/resources/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    networks:
+      - database-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  user:
+    build:
+      context: ./user
+    container_name: user-service
+    ports:
+      - "8081:8082"
+    depends_on:
+      - database
+    networks:
+      - user-network
+      - database-network
+
+  chat:
+    build:
+      context: ./chat
+    container_name: chat-service
+    ports:
+      - "8083:8083"
+    depends_on:
+      - database
+    networks:
+      - chat-network
+      - database-network
+
+  flights:
+    build:
+      context: ./flights
+    container_name: flights-service
+    ports:
+      - "8084:8084"
+    depends_on:
+      - database
+    networks:
+      - flights-network
+      - database-network
+      - external-db-network  # Connects to existing mockdb-container
