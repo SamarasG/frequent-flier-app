@@ -15,7 +15,7 @@ services:
       context: ./database
     container_name: frequent_flier_db
     ports:
-      - "5433:5433"
+      - "5433:5432"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -29,6 +29,13 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8090:8080
+    networks:
+      - database-network
 
   user:
     build:
@@ -65,4 +72,4 @@ services:
     networks:
       - flights-network
       - database-network
-      - external-db-network  # Connects to existing mockdb-container
+      - external-db-network

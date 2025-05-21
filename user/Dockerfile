@@ -1,5 +1,5 @@
 # user/Dockerfile
-FROM openjdk:17-jdk-slim
+FROM openjdk:21-jdk
 
 WORKDIR /app
 

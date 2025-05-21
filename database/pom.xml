@@ -64,7 +64,7 @@
                             </build>
                             <run>
                                 <ports>
-                                    <port>5433:5433</port>
+                                    <port>5433:5432</port>
                                 </ports>
                                 <env>
                                     <POSTGRES_USER>postgres</POSTGRES_USER>
