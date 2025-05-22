@@ -1,0 +1,34 @@
+# frequent-flier-db-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frequent-flier-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frequent-flier-db
+  template:
+    metadata:
+      labels:
+        app: frequent-flier-db
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:15
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_DB
+              value: "frequent_flier"
+            - name: POSTGRES_USER
+              value: "postgres"
+            - name: POSTGRES_PASSWORD
+              value: "postgres"
+          volumeMounts:
+            - mountPath: "/var/lib/postgresql/data"
+              name: frequent-flier-db-storage
+      volumes:
+        - name: frequent-flier-db-storage
+          persistentVolumeClaim:
+            claimName: frequent-flier-db-pvc

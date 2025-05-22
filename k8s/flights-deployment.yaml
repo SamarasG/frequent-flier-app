@@ -1,0 +1,35 @@
+# flights-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flights-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flights-service
+  template:
+    metadata:
+      labels:
+        app: flights-service
+    spec:
+      containers:
+        - name: flights-service
+          image: frequent-flier-app-flights
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: /q/health/ready
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /q/health/live
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            failureThreshold: 5
