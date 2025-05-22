@@ -24,6 +24,11 @@ public class FlightController {
     public List<Flight> getUserFlightLogs(@PathParam("userId") UUID userId) {
         return flightService.getUserFlightLogs(userId);
     }
+    @GET
+    @Path("/user/{userId}/sorted")
+    public List<Flight> getUserFlightsSorted(@PathParam("userId") UUID userId) {
+        return flightService.getUserFlightsSorted(userId);
+    }
 
     @POST
     @Path("/validate")

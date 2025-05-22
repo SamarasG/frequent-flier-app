@@ -48,4 +48,8 @@ public class FlightService {
         }
         return Optional.empty();
     }
+    public List<Flight> getUserFlightsSorted(UUID userId) {
+        return flightRepository.find("userId = ?1 order by departureTime desc", userId).list();
+    }
+
 }
